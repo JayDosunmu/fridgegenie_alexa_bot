@@ -1,6 +1,26 @@
 welcome: |
   <speak>
-    Welcome to memory game. I'm going to say three numbers for you to repeat backwards. Ready?
+    Hey there. You currently have {{ num_items }} items in your fridge.
+    What would you like to do?
+  </speak>
+
+help: |
+  <speak>
+    You can add or remove items just by saying add item, or remove item.
+    You can check what you have and what is expiring. You can order more food,
+    or find a recipe to cook with what you have. You can also say local food
+    bank to find places that you can donate food to. If you need help, just
+    say help.
+  </speak>
+
+add: |
+  <speak>
+    Ok, {{ item_name }} added. Do you want to add an expiration date?
+  </speak>
+
+add: |
+  <speak>
+    Ok, {{ item_name }} removed.
   </speak>
 
 round: Can you repeat the numbers {{ numbers|join(", ") }} backwards?
@@ -9,4 +29,12 @@ win: Good job!
 
 lose: Sorry, that's the wrong answer.
 
-fairest: Taiwo Femi is the fairest of them all. She is smart, beautiful, and a great person!
+fairest: |
+  <speak>
+    Taiwo Femi is the fairest of them all. She is smart, beautiful,
+    and a great person!
+  </speak>
+
+cancel: Ok, cancelling.
+
+confirm: Ok, I can do that.

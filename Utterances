@@ -1,0 +1,80 @@
+TestIntent hello world
+TestIntent say hello world
+TestIntent to say hello world
+
+FairestIntent who is the fairest of them all
+FairestIntent mirror mirror on the wall
+
+AddIntent add {Item}
+AddIntent add {Item} to list
+AddIntent add {Item} to grocery list
+AddIntent add {Item} to the fridge
+AddIntent put {Item} in list
+AddIntent put {Item} in grocery list
+AddIntent put {Item} in fridge
+AddIntent put {Item} in the fridge
+
+SingleExpireIntent it expires {Date}
+SingleExpireIntent it expires on {Date}
+SingleExpireIntent it will expire {Date}
+SingleExpireIntent it will expire on {Date}
+
+RemoveItemIntent delete {Item}
+RemoveItemIntent remove {Item}
+RemoveItemIntent remove {Item} from list
+RemoveItemIntent remove {Item} from fridge
+RemoveItemIntent remove {Item} from grocery list
+
+RemoveExpiredIntent remove expired
+RemoveExpiredIntent remove old stuff
+RemoveExpiredIntent remove whats expiring
+RemoveExpiredIntent get rid off expired stuff
+
+CheckFridgeIntent check fridge
+CheckFridgeIntent check fridge status
+CheckFridgeIntent check status of fridge
+CheckFridgeIntent check food in fridge
+CheckFridgeIntent whats in my fridge
+CheckFridgeIntent what groceries do I have
+
+CheckExpiringIntent what is expiring
+CheckExpiringIntent what is about to expire
+CheckExpiringIntent what is expired
+CheckExpiringIntent what do i have to throw out
+
+CheckItemIntent do i have {Item}
+CheckItemIntent is {Item} available
+CheckItemIntent is {Item} in the fridge
+
+OrderExpiredIntent order what is expired
+OrderExpiredIntent restock groceries
+OrderExpiredIntent to restock on groceries
+
+OrderItemIntent order {Items}
+OrderItemIntent please get {Items}
+OrderItemIntent place an order for {Items}
+
+DonateIntent where can i donate food
+DonateIntent local food bank
+DonateIntent i want to make a donation
+
+ChooseDonateLocationIntent i will donate at {Location}
+ChooseDonateLocationIntent donate to {Location}
+
+HelpIntent help
+HelpIntent what can you do
+HelpIntent what can i do
+HelpIntent what are the commands
+HelpIntent list the commands
+
+YesIntent yes
+YesIntent yeah
+YesIntent sure
+YesIntent okay
+YesIntent continue
+YesIntent go ahead
+
+NoIntent no
+NoIntent nah
+NoIntent no thank you
+NoIntent cancel

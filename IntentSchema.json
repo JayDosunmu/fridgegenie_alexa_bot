@@ -1,0 +1,98 @@
+{
+    "intents": [
+      {
+        "intent": "TestIntent"
+      },
+      {
+        "intent": "FairestIntent"
+      },
+      {
+        "intent": "AddIntent",
+        "slots": [
+          {
+            "name": "Item",
+            "type": "AMAZON.Food"
+          }
+        ]
+      },
+      {
+        "intent": "RemoveItemIntent",
+        "slots": [
+          {
+            "name": "Item",
+            "type": "AMAZON.Food"
+          }
+        ]
+      },
+      {
+        "intent": "RemoveExpiredIntent"
+      },
+      {
+        "intent": "CheckFridgeIntent"
+      },
+      {
+        "intent": "CheckExpiringIntent"
+      },
+      {
+        "intent": "CheckItemIntent",
+        "slots": [
+          {
+            "name": "Item",
+            "type": "AMAZON.Food"
+          }
+        ]
+      },
+      {
+        "intent": "OrderExpiredIntent"
+      },
+      {
+        "intent": "OrderItemIntent",
+        "slots": [
+          {
+            "name": "Items",
+            "type": "AMAZON.Food"
+          }
+        ]
+      },
+      {
+        "intent": "ChooseDonateLocationIntent",
+        "slots": [
+          {
+            "name": "Location",
+            "type": "AMAZON.Food"
+          }
+        ]
+      },
+      {
+        "intent": "DonateIntent"
+      },
+      {
+        "intent": "SingleExpireIntent",
+        "slots": [
+          {
+            "name": "Item",
+            "type": "AMAZON.Food"
+          },
+          {
+            "name": "Date",
+            "type": "AMAZON.Date"
+          }
+        ]
+      },
+      {
+        "intent": "HelpIntent"
+      },
+      {
+        "intent": "YesIntent"
+      },
+      {
+        "intent": "NoIntent"
+      },
+      {
+        "intent": "AMAZON.PauseIntent"
+      },
+      {
+        "intent": "AMAZON.ResumeIntent"
+      }
+    ]
+  }

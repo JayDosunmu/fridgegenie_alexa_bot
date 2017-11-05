@@ -1,4 +1,11 @@
+import time
+import datetime as dt
+from datetime import datetime, timedelta
+import decimal
 import logging
+import json
+import random
+
 from operator import itemgetter
 import boto3
 
@@ -6,7 +13,6 @@ import requests
 from flask import Flask, render_template
 from flask_ask import Ask, statement, question, session
 
-from random import randint
 
 '''
 Good idea to use default vals in intent declaration
@@ -21,20 +27,84 @@ logger = logging.getLogger()
 
 db = boto3.resource('dynamodb', region_name='us-west-2', endpoint_url="http://localhost:8000")
 
+items = db.Table('Items')
+recipes = db.Table('Recipes')
+orders = db.Table('Orders')
+donations = db.Table('Donations')
+
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, decimal.Decimal):
+            if o % 1 > 0:
+                return float(o)
+            else:
+                return int(o)
+        return super(DecimalEncoder, self).default(o)
+
+
 @ask.launch
 def welcome():
-    welcome_msg = render_template('welcome')
+    num_items = items.item_count
+    msg = render_template('welcome', num_items=num_items)
+    hlp = render_template('help')
+    return question(msg).reprompt(hlp)
 
-    return question(welcome_msg)
+
+@ask.intent("AddIntent", mapping={'item': 'Item'})
+def add_item(item):
+    date = (datetime.now() - timedelta(days=7)).date()
+    t = int(time.mktime(date.timetuple()))
+    to_add = {
+        "item": item,
+        "price": int(random.random() * 10),
+        "expiration_date": t
+    }
+
+    items.put_item(
+        Item=to_add
+    )
+
+    message = render_template('add', item_name=item)
+
+    return question(message)
+
+
+@ask.intent("RemoveItemIntent", mapping={'item': 'Item'})
+def add_item(item):
+    to_remove = {
+        "item": item
+    }
+
+    items.delete_item(
+        Key={
+            "item": item
+        }
+    )
+
+    message = render_template('remove', item_name=item)
+
+    return question(message)
+
+@ask.intent("HelpIntent")
+def help():
+    message = render_template('help')
+
+    return statement(message)
+
+
+@ask.intent("NoIntent")
+def cancel():
+    message = render_template('cancel')
+
+    return statement(message)
 
 
 @ask.intent("YesIntent")
-def next_round():
-    numbers = [randint(0, 9) for _ in range(3)]
-    round_msg = render_template('round', numbers=numbers)
-    session.attributes['numbers'] = numbers[::-1]  # reverse
+def confirm():
+    message = render_template('confirm')
 
-    return question(round_msg)
+    return statement(message)
+
 
 @ask.intent("FairestIntent")
 def fairest():
@@ -56,5 +126,4 @@ def answer(first, second, third):
 
 
 if __name__ == '__main__':
-
     app.run(debug=True)

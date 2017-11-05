@@ -1,0 +1,12 @@
+welcome: |
+  <speak>
+    Welcome to memory game. I'm going to say three numbers for you to repeat backwards. Ready?
+  </speak>
+
+round: Can you repeat the numbers {{ numbers|join(", ") }} backwards?
+
+win: Good job!
+
+lose: Sorry, that's the wrong answer.
+
+fairest: Taiwo Femi is the fairest of them all. She is smart, beautiful, and a great person!

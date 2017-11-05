@@ -14,6 +14,7 @@ AddIntent put {Item} in grocery list
 AddIntent put {Item} in fridge
 AddIntent put {Item} in the fridge
 
+SingleExpireIntent {Date} from now
 SingleExpireIntent it expires {Date}
 SingleExpireIntent it expires on {Date}
 SingleExpireIntent it will expire {Date}

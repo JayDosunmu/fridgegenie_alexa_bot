@@ -27,10 +27,10 @@ logger = logging.getLogger()
 
 db = boto3.resource('dynamodb', region_name='us-west-2', endpoint_url="http://localhost:8000")
 
-items = db.Table('Items')
-recipes = db.Table('Recipes')
-orders = db.Table('Orders')
-donations = db.Table('Donations')
+items_table = db.Table('Items')
+recipesTable = db.Table('Recipes')
+ordersTable = db.Table('Orders')
+donationsTable = db.Table('Donations')
 
 class DecimalEncoder(json.JSONEncoder):
     def default(self, o):
@@ -44,7 +44,7 @@ class DecimalEncoder(json.JSONEncoder):
 
 @ask.launch
 def welcome():
-    num_items = items.item_count
+    num_items = items_table.item_count
     msg = render_template('welcome', num_items=num_items)
     hlp = render_template('help')
     return question(msg).reprompt(hlp)
@@ -59,31 +59,65 @@ def add_item(item):
         "price": int(random.random() * 10),
         "expiration_date": t
     }
+    session.attributes['item'] = to_add
 
-    items.put_item(
+    items_table.put_item(
         Item=to_add
     )
-
     message = render_template('add', item_name=item)
+    session.attributes['next_prompt'] = 'expiration'
 
     return question(message)
 
 
 @ask.intent("RemoveItemIntent", mapping={'item': 'Item'})
-def add_item(item):
+def remove_item(item):
     to_remove = {
         "item": item
     }
+    session.attributes['item'] = to_remove
 
-    items.delete_item(
-        Key={
-            "item": item
-        }
+    items_table.delete_item(
+        Key=to_remove
     )
-
     message = render_template('remove', item_name=item)
 
     return question(message)
+
+
+@ask.intent("SingleExpireIntent", mapping={'date':'Date'})
+def expiration(date):
+    item = session.attributes['item']
+    item['expiration_date'] = date
+
+    items.update_item(
+        Key=item
+    )
+    message = render_template('confirm_expiration', date=date)
+    return statement(message)
+
+
+@ask.intent("CheckFridgeIntent")
+def checkFridge():
+    pe = "#it"
+    ean = {"#it": "item"}
+    response = items_table.scan(
+        ProjectionExpression=pe,
+        ExpressionAttributeNames= ean
+    )
+
+    items = response['Items']
+    print(items)
+
+
+    message = render_template(
+        'check_fridge',
+        items=items,
+        num_items=len(items),
+        num_expiring=0
+    )
+    return statement(message)
+
 
 @ask.intent("HelpIntent")
 def help():
@@ -102,15 +136,20 @@ def cancel():
 @ask.intent("YesIntent")
 def confirm():
     message = render_template('confirm')
+    if session.attributes.get('next_prompt', '') == 'expiration':
+        item = session.attributes['item']
+        message = render_template('expiration', item_name=item.item)
 
-    return statement(message)
+    session.attributes.pop('next_prompt', None)
+
+    return question(message)
 
 
-@ask.intent("FairestIntent")
-def fairest():
-    message = render_template('fairest')
+# @ask.intent("FairestIntent")
+# def fairest():
+#     message = render_template('fairest')
 
-    return statement(message)
+#     return statement(message)
 
 
 @ask.intent("AnswerIntent", convert={'first': int, 'second': int, 'third': int})
